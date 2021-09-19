@@ -22,7 +22,7 @@ import Sidebar from 'components/Sidebar/Sidebar.js';
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from 'perfect-scrollbar';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import { checkLogin } from 'redux/actions/authAction';
@@ -33,9 +33,8 @@ var ps;
 function Dashboard(props) {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { checkLoginLoading, checkLoginResult, checkLoginError } = useSelector((state) => state.authReducer);
-  const [backgroundColor, setBackgroundColor] = React.useState('blue');
-  const [activeColor, setActiveColor] = React.useState('white');
+  const [backgroundColor] = React.useState('blue');
+  const [activeColor] = React.useState('white');
   const mainPanel = React.useRef();
   const location = useLocation();
   React.useEffect(() => {
@@ -58,7 +57,7 @@ function Dashboard(props) {
 
   React.useEffect(() => {
     dispatch(checkLogin(history));
-  }, []);
+  }, [dispatch, history]);
   return (
     <div className='wrapper'>
       <Sidebar {...props} routes={routes} bgColor={backgroundColor} activeColor={activeColor} />

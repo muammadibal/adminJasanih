@@ -31,7 +31,7 @@ function Header(props) {
   const [color, setColor] = React.useState('transparent');
   const sidebarToggle = React.useRef();
   const location = useLocation();
-  const { signInLoading, signInResult, signInError, checkLoginResult } = useSelector((state) => state.authReducer);
+  const { signInResult, checkLoginResult } = useSelector((state) => state.authReducer);
   // console.log(signInResult, checkLoginResult);
   const toggle = () => {
     if (isOpen) {

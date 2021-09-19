@@ -1,8 +1,6 @@
-import { signInWithEmailAndPassword, signOut as logOut } from '@firebase/auth';
-import { collection, getDocs, query, where, setDoc, updateDoc, doc } from '@firebase/firestore';
-
-import { auth, db } from '../../configs/Fire';
-import { dispatchError, dispatchLoading, dispatchSuccess, date } from '../../utils';
+import { collection, doc, getDocs, query, updateDoc, where } from '@firebase/firestore';
+import { db } from '../../configs/Fire';
+import { date, dispatchError, dispatchLoading, dispatchSuccess } from '../../utils';
 
 export const GET_TRANSACTION = 'GET_TRANSACTION';
 

@@ -15,7 +15,7 @@ class Login extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { signInLoading, signInResult, signInError, checkLoginLoading, checkLoginResult, checkLoginError } = this.props;
+    const { signInResult, signInError, checkLoginResult } = this.props;
     if (signInResult && prevProps.signInResult !== signInResult) {
       this.props.history.push('/admin/dashboard');
     }
@@ -47,7 +47,7 @@ class Login extends Component {
   }
 
   render() {
-    const { signInLoading, signInResult, signInError, checkLoginLoading } = this.props;
+    const { signInLoading, signInError, checkLoginLoading } = this.props;
     const { email, password, error } = this.state;
     return (
       <>

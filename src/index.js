@@ -39,8 +39,8 @@ ReactDOM.render(
         <Route path='/payment/unfinish' component={UnFinish} exact />
         <Route path='/payment/error' component={Canceled} exact />
         <Route path='/login' component={Login} exact />
-        <Route path='*' component={Page404} exact />
         <Redirect to='/login' />
+        <Route path='*' component={Page404} exact />
       </Switch>
     </BrowserRouter>
   </Provider>,

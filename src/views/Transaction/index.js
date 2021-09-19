@@ -5,11 +5,11 @@ import { getTransaction } from 'redux/actions/transactionAction';
 
 function Transaction() {
   const dispatch = useDispatch();
-  const { getTransactionLoading, getTransactionResult, getTransactionError } = useSelector((state) => state.transactionReducer);
+  const { getTransactionLoading, getTransactionResult } = useSelector((state) => state.transactionReducer);
 
   useEffect(() => {
     dispatch(getTransaction());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className='content'>

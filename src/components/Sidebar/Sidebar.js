@@ -48,12 +48,12 @@ function Sidebar(props) {
   return (
     <div className='sidebar' data-color={props.bgColor} data-active-color={props.activeColor}>
       <div className='logo'>
-        <a href='' className='simple-text logo-mini'>
+        <a href='/admin/dashboard' className='simple-text logo-mini'>
           <div className='logo-img'>
             <img src={logo} alt='react-logo' width='35%' />
           </div>
         </a>
-        <a href='' className='simple-text logo-normal'>
+        <a href='/admin/dashboard' className='simple-text logo-normal'>
           Jasanih
         </a>
       </div>
