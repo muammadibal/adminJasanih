@@ -8,8 +8,10 @@ export const URL_MIDTRANS_HEADER = {
   Accept: 'application/json',
   'Content-Type': 'application/json',
   Authorization: 'Basic U0ItTWlkLXNlcnZlci1xN0I0U0dkLW5NcVBLcE5WY1FKbnJKY0k=',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
 };
 
 export const HEADER_TIMEOUT = 120000;
 
-export const URL_MIDTRANS_SNAP_STATUS = 'https://api.sandbox.midtrans.com/v2';
+export const URL_MIDTRANS_SNAP_STATUS = 'http://api.sandbox.midtrans.com/v2';

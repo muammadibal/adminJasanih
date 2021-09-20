@@ -34,62 +34,58 @@ export const confirmTransaction = (order_id, trx_stats) => (dispatch) => {
   // console.log(userId);
   // console.log(order_id);
 
-  axios({
-    method: 'GET',
-    url: `${URL_MIDTRANS_SNAP_STATUS}/${order_id}/status`,
-    headers: URL_MIDTRANS_HEADER,
-    timeout: HEADER_TIMEOUT,
-  }).then((res) => {
-    console.log(res);
-  });
+  axios
+    .get(`${URL_MIDTRANS_SNAP_STATUS}/${order_id}/status`, {
+      headers: URL_MIDTRANS_HEADER,
+      timeout: HEADER_TIMEOUT,
+    })
+    .then((res) => {
+      console.log(res.data);
+      const trx_status = res.data.transaction_status;
+      if (trx_status === 'settlement' || trx_status === 'capture') {
+        async function updateTransaction() {
+          const qtrx = query(collection(db, 'transactions'), where('orderId', '==', order_id), where('status', '!=', 'paid'));
+          const querySnapshot = await getDocs(qtrx);
 
-  axios.get(`${URL_MIDTRANS_SNAP_STATUS}/${order_id}/status`, { headers: URL_MIDTRANS_HEADER, timeout: HEADER_TIMEOUT }).then((res) => {
-    console.log(res);
-    const trx_status = res.data.transaction_status;
-    if (trx_status === 'settlement' || trx_status === 'capture') {
-      async function updateTransaction() {
-        const qtrx = query(collection(db, 'transactions'), where('orderId', '==', order_id), where('status', '!=', 'paid'));
-        const querySnapshot = await getDocs(qtrx);
+          if (querySnapshot.docs) {
+            let amount = '';
 
-        if (querySnapshot.docs) {
-          let amount = '';
-
-          querySnapshot.forEach((docs) => {
-            // doc.data() is never undefined for query doc snapshots
-            // console.log(docs.id, ' => ', docs.data());
-            amount = docs.data().amount;
-            let today = new Date();
-            async function updateStatus() {
-              const trxDocRef = doc(db, 'transactions', docs.id);
-              await updateDoc(trxDocRef, {
-                status,
-                paidDate: date(today),
-              });
-            }
-            return updateStatus();
-          });
-
-          async function getUser() {
-            const q = query(collection(db, 'users'), where('uid', '==', userId[1]));
-
-            const Snap = await getDocs(q);
-            Snap.forEach((docsSnap) => {
+            querySnapshot.forEach((docs) => {
               // doc.data() is never undefined for query doc snapshots
-              console.log(docsSnap.id, ' => ', docsSnap.data());
-              async function updateUser() {
-                const userDocRef = doc(db, 'users', docsSnap.id);
-                await updateDoc(userDocRef, {
-                  balance: parseInt(docsSnap.data().balance) + parseInt(amount),
+              // console.log(docs.id, ' => ', docs.data());
+              amount = docs.data().amount;
+              let today = new Date();
+              async function updateStatus() {
+                const trxDocRef = doc(db, 'transactions', docs.id);
+                await updateDoc(trxDocRef, {
+                  status,
+                  paidDate: date(today),
                 });
               }
-              return updateUser();
+              return updateStatus();
             });
-          }
 
-          return getUser();
+            async function getUser() {
+              const q = query(collection(db, 'users'), where('uid', '==', userId[1]));
+
+              const Snap = await getDocs(q);
+              Snap.forEach((docsSnap) => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(docsSnap.id, ' => ', docsSnap.data());
+                async function updateUser() {
+                  const userDocRef = doc(db, 'users', docsSnap.id);
+                  await updateDoc(userDocRef, {
+                    balance: parseInt(docsSnap.data().balance) + parseInt(amount),
+                  });
+                }
+                return updateUser();
+              });
+            }
+
+            return getUser();
+          }
         }
+        return updateTransaction();
       }
-      return updateTransaction();
-    }
-  });
+    });
 };
