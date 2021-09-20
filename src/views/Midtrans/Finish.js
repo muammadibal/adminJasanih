@@ -14,8 +14,7 @@ class Finish extends Component {
   }
 
   onSubmit = () => {
-    const { order_id } = this.state;
-    window.ReactNativeWebView.postMessage({ message: 'finished', order_id });
+    window.ReactNativeWebView.postMessage('finished');
   };
 
   componentDidMount() {
